@@ -6,8 +6,9 @@ class App extends Component {
     data: [],
     areas: ["California", "Chico MSA", "Sacramento--Roseville--Arden-Arcade MSA", "Redding MSA", "Oakland-Hayward-Berkeley Metro Div", "Napa MSA", "Modesto MSA", "Merced MSA", "Madera MSA", "Los Angeles-Long Beach-Glendale Metro Div", "San Jose-Sunnyvale-Santa Clara MSA", "San Francisco-Redwood City-South San Francisco Metro Div"],
     area_selection: "California",
-    occcupation_selection_1 : "Software Engineering",
-    occcupation_selection_1 : "Accounting"
+    occupation_select_1 : "Software Engineering",
+    occupation_select_2 : "Accounting",
+    highest_salary: "150000",
   }
 
   componentDidMount () {
@@ -15,19 +16,24 @@ class App extends Component {
     .then(response => response.json())
     .then(data => {
         this.setState({
-          data : data
+          data : data,
         });
     });
     // this.setState({
     //   areas : [...new Set(this.state.data.map(stat => stat.area_name))]
     // })
   }
-  // onNameChange = (ev) => {
-  //   let value = ev.target.value;
-  //   this.setState({
-  //     name: value,
-  //   });
-  // }
+  onOptionChange = (ev) => {
+    let {name, value} = ev.target;
+    this.setState({
+      [name]: value,
+      highest_salary: Math.max(...this.state.data.map(wage => Number(wage.mean_wage)).filter(value => !Number.isNaN(value))),
+    });
+  }
+
+  // getHighestValue = (ev) => {
+  //   let 
+  // } Math.max(...a.map(el => Number(el)))
 
   // addAnimal = () => {
   //   const animals = this.state.animals.concat([]);
@@ -48,7 +54,10 @@ class App extends Component {
   render() {
     // console.log('adding a new animal!');
         console.log(this.state.data)
-        console.log(this.state.areas);
+        console.log(this.state.highest_salary);
+        console.log(typeof this.state.highest_salary);
+        // console.log(Math.max(...this.state.highest_salary));
+        console.log(this.state.occupation_select_1);
 
     return (
       <div>
@@ -64,14 +73,14 @@ class App extends Component {
                     }    
                 </select>
                 <label>Choose occupations to compare:</label>
-                <select id="first-select" onchange="displayOutput()">
+                <select name="occupation_select_1" id="first-select" onChange={this.onOptionChange}>
                     {
                       this.state.data.map(title => (
                       <option value={title.occupational_title}>{title.occupational_title}</ option>
                         ))
                     }
                 </select>
-                <select id="second-select" onchange="displayOutput()">
+                <select name="occupation_select_1" id="second-select" onChange={this.onOptionChange}>
                     {
                       this.state.data.map(title => (
                       <option value={title.occupational_title}>{title.occupational_title}</ option>
