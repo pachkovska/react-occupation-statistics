@@ -1,38 +1,154 @@
-.App {
-  text-align: center;
+:root {
+  --barGraph1-color: #6c7b95;
+  --barGraph2-color: #c7f0db;
+  --font-color: #47515b;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  margin: 30px;
+  font-family: 'Montserrat', sans-serif;
+  color: var(--font-color);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.Container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-items: space-around;
+  margin-top: 30px;
+  height: 100vh;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.Occupations {
+  position: relative;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
+}
+
+.Occupations > * {
+  margin-bottom: 20px;
+  font-family: 'Montserrat', sans-serif;
+  color: var(--font-color);
+}
+
+.ChartAreaContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  border-bottom: 1px solid lightgray;
+  border-left: 1px solid lightgray;
+  border-right: 1px solid lightgray;
+  padding-bottom: 10px;
+  width: 700px;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
-.App-link {
-  color: #61dafb;
+.GraphTicks {
+  bottom: -100px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.Tick {
+  height: 10px;
+  position: absolute;
+  bottom: -10px;
+  font-size: 10px;
+  border-left: lightgray 1px solid;
+}
+
+.Tick:nth-child(1)  {
+  left: 0px;
+}
+
+.Tick:nth-child(2)  {
+  left: 115px;
+}
+
+.Tick:nth-child(3)  {
+  left: 230px;
+}
+
+.Tick:nth-child(4)  {
+  left: 347px;
+}
+
+.Tick:nth-child(5)  {
+  left: 465px;
+}
+
+.Tick:nth-child(6)  {
+  left: 580px;
+}
+
+.Tick:nth-child(7)  {
+  left: 700px;
+}
+
+.Tick > span {
+  position:relative;
+  bottom: -10px;
+  left: -7px;
+}
+
+.Graph1, .Graph2, .barLabels {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(10, 1fr);
+  row-gap: 10px;
+}
+
+.Graph1 {
+  align-items: end;
+  width: 300px;
+}
+
+.Graph2 {
+  align-items: start;
+}
+
+.Graph1 > div:not(.ChartAreaContainer-leftLabel) {
+  background-color: var(--barGraph1-color);
+  border: 1px solid var(--barGraph1-color);
+  box-sizing: border-box;
+  height: 30px;
+  justify-self: end;
+}
+
+.Graph2 > div:not(.ChartAreaContainer-rightLabel) {
+  background-color: var(--barGraph2-color);
+  border: 1px solid var(--barGraph2-color);
+  box-sizing: border-box;
+  height: 30px;
+}
+
+.barLabels > div {
+  align-self: center;
+  margin: 3px;
+}
+
+.ChartAreaContainer-leftLabel {
+  justify-self: flex-end;
+}
+
+.ChartAreaContainer-rightLabel {
+  align-self: end;
+}
+
+.Graph1-bar:hover, .Graph2-bar:hover {
+  animation: Spin 0.5s;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+}
+
+@keyframes Spin {
+  from { 
+      transform: rotate3d(0, 0, 0, 0deg);    
   }
-  to {
-    transform: rotate(360deg);
+  to   { 
+      transform: rotate3d(1, 0, 0, 180deg);
   }
 }
