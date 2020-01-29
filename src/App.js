@@ -2,14 +2,17 @@ import React, { Component } from 'react';
 import './App.css';
 
 class App extends Component {
-  state = {
-    data: [],
-    areas: ["California", "Chico MSA", "Sacramento--Roseville--Arden-Arcade MSA", "Redding MSA", "Oakland-Hayward-Berkeley Metro Div", "Napa MSA", "Modesto MSA", "Merced MSA", "Madera MSA", "Los Angeles-Long Beach-Glendale Metro Div", "San Jose-Sunnyvale-Santa Clara MSA", "San Francisco-Redwood City-South San Francisco Metro Div"],
-    area_selection: "California",
-    occupation_select_1 : "Software Engineering",
-    occupation_select_2 : "Accounting",
-    highest_salary: "150000",
-  }
+
+state = {
+      data: [],
+      areas: ["California", "Chico MSA", "Sacramento--Roseville--Arden-Arcade MSA", "Redding MSA", "Oakland-Hayward-Berkeley Metro Div", "Napa MSA", "Modesto MSA", "Merced MSA", "Madera MSA", "Los Angeles-Long Beach-Glendale Metro Div", "San Jose-Sunnyvale-Santa Clara MSA", "San Francisco-Redwood City-South San Francisco Metro Div"],
+      area_selection: "California",
+      occupation_select_1 : "",
+      occupation_select_2 : "",
+      highest_salary: 150000,
+      highest_employed : 30000,
+    }
+
 
   componentDidMount () {
     fetch(`https://data.edd.ca.gov/resource/pwxn-y2g5.json?wage_type=Annual wage or salary&area_name=${this.state.area_selection}&$limit=10000`)
@@ -19,115 +22,93 @@ class App extends Component {
           data : data,
         });
     });
-    // this.setState({
-    //   areas : [...new Set(this.state.data.map(stat => stat.area_name))]
-    // })
   }
+
   onOptionChange = (ev) => {
     let {name, value} = ev.target;
     this.setState({
       [name]: value,
-      highest_salary: Math.max(...this.state.data.map(wage => Number(wage.mean_wage)).filter(value => !Number.isNaN(value))),
+      highest_salary: Math.max(...this.state.data.filter(el => el.occupational_title === value).map(wage => Number(wage.mean_wage)).filter(value => !Number.isNaN(value))),
+      highest_employed: Math.max(...this.state.data.filter(el => el.occupational_title === value).map(el => Number(el.number_of_employed)).filter(value => !Number.isNaN(value))),
     });
   }
 
-  // getHighestValue = (ev) => {
-  //   let 
-  // } Math.max(...a.map(el => Number(el)))
-
-  // addAnimal = () => {
-  //   const animals = this.state.animals.concat([]);
-  //   animals.push(this.state.name);
-  //   this.setState({
-  //       animals: animals,
-  //   });
-  // }
-
-  // removeAnimal = (index) => {
-  //   const animals = this.state.animals.concat([]);
-  //   animals.push(this.state.name);
-  //   this.setState({
-  //       animals: animals,
-  //   });  
-  // }
+  onAreaChange = () => {
+    fetch(`https://data.edd.ca.gov/resource/pwxn-y2g5.json?wage_type=Annual wage or salary&area_name=${this.state.area_selection}&$limit=10000`)
+    .then(response => response.json())
+    .then(data => {
+        this.setState({
+          data : data,
+        });
+    });
+    this.setState({
+      occupation_select_1: this.occupation_select_1,
+      occupation_select_2: this.occupation_select_2,
+    })
+  }
 
   render() {
-    // console.log('adding a new animal!');
-        console.log(this.state.data)
-        console.log(this.state.highest_salary);
-        console.log(typeof this.state.highest_salary);
-        // console.log(Math.max(...this.state.highest_salary));
-        console.log(this.state.occupation_select_1);
 
     return (
       <div>
-        <h2>How Occupation Statistics have changed in the past 9 years in the San Francisco Bay Area</h2>
+        <h1>Occupation Statistics changes in California</h1>
+        <label className="Areas-label">To zoom in on smaller areas of California: </label>
+        <div  className="Area--select center-element">
+          <select onChange={this.onAreaChange}>
+              {
+                this.state.areas.map(area => (
+                <option value={area}>{area}</ option>
+                  ))
+              }    
+          </select>
+        </div>
         <div className="Container">
             <div className="Occupations">
-                <label>Available areas</label>
-                <select className="Areas">
-                    {
-                      this.state.areas.map(area => (
-                      <option value={area}>{area}</ option>
-                       ))
-                    }    
-                </select>
                 <label>Choose occupations to compare:</label>
                 <select name="occupation_select_1" id="first-select" onChange={this.onOptionChange}>
                     {
-                      this.state.data.map(title => (
-                      <option value={title.occupational_title}>{title.occupational_title}</ option>
+                      this.state.data.filter(el => el.occupational_title.length < 30).map(title => (
+                      <option value={title.occupational_title}>{title.occupational_title}</ option> 
                         ))
                     }
                 </select>
-                <select name="occupation_select_1" id="second-select" onChange={this.onOptionChange}>
+                <select name="occupation_select_2" id="second-select" onChange={this.onOptionChange}>
                     {
-                      this.state.data.map(title => (
+                      this.state.data.filter(el => el.occupational_title.length < 30).map(title => (
                       <option value={title.occupational_title}>{title.occupational_title}</ option>
                         ))
                     }
                 </select>
             </div>
-            <div className="ChartAreaContainer">
-                <div className="Graph1">
-                    <div className="ChartAreaContainer-leftLabel">Accounting
-                        </div>
-                    <div className="Graph1-bar" onClick="doFetch()"></ div>
-                    <div className="Graph1-bar" onClick="alert('Employed: 15,310. Mean salary: $94,090.00.')"></ div>
-                    <div className="Graph1-bar" onClick="alert('Employed: 15,730. Mean salary: $91,572.87.')"></ div>
-                    <div className="Graph1-bar" onClick="alert('Employed: 14,720. Mean salary: $93,022.46.')"></ div>
-                    <div className="Graph1-bar" onClick="alert('Employed: 15,140. Mean salary: $89,067.02.')"></ div>
-                    <div className="Graph1-bar" onClick="alert('Employed: 13,970. Mean salary: $86,991.35.')"></ div>
-                    <div className="Graph1-bar" onClick="alert('Employed: 14,080. Mean salary: $86,641.85.')"></ div>
-                    <div className="Graph1-bar" onClick="alert('Employed: 13,010. Mean salary: $87,212.92.')"></ div>
-                    <div className="Graph1-bar" onClick="alert('Employed: 13,350. Mean salary: $85,568.64.')"></ div>
+            <div className="ChartAreaContainer Card--style">
+                <div className="ChartAreaContainer-leftLabel">{this.state.occupation_select_1}
                 </div>
-                <div className="barLabels">
-                    <div></div>
-                    <div>2019</div>
-                    <div>2018</div>
-                    <div>2017</div>
-                    <div>2016</div>
-                    <div>2015</div>
-                    <div>2014</div>
-                    <div>2013</div>
-                    <div>2012</div>
-                    <div>2011</div>
+                <div className="ChartAreaContainer-rightLabel">           {this.state.occupation_select_2}
+                </div>
+                {/* <div className="ChartArea-bars"> */}
+                <div className="Graph1">
+                    {
+                      this.state.data.map((el) => (el.occupational_title === this.state.occupation_select_1 & el.year > 2010 ? 
+                      <div className="Graph1-bar"  style={{ width: Number(el.mean_wage)/this.state.highest_salary * 70 + '%' }}></div> : null
+                      ))
+                    }
+                </div> 
+                <div className="Years">
+                  {
+                    this.state.data.filter(el => el.occupational_title === this.state.occupation_select_1 & el.year > 2010).map(el => (el.occupational_title === this.state.occupation_select_1 & el.year > 2010 ?
+                    <div>{el.year}</div> : null
+                    ))
+                  }
                 </div>
                 <div className="Graph2">
-                    <div className="ChartAreaContainer-rightLabel">Software Engineering
-                        </div>
-                    <div className="Graph2-bar" onClick="alert('Employed: 31,200. Mean salary: $153,561.92.')"></ div>
-                    <div className="Graph2-bar" onClick="alert('Employed: 30,120. Mean salary: $149,873.00.')"></ div>
-                    <div className="Graph2-bar" onClick="alert('Employed: 26,250. Mean salary: $123,967.17.')"></ div>
-                    <div className="Graph2-bar" onClick="alert('Employed: 22,950. Mean salary: $119,476.81.')"></ div>
-                    <div className="Graph2-bar" onClick="alert('Employed: 19,060. Mean salary: $119,252.87.')"></ div>
-                    <div className="Graph2-bar" onClick="alert('Employed: 15,220. Mean salary: $115,740.25.')"></ div>
-                    <div className="Graph2-bar" onClick="alert('Employed: 14,070. Mean salary: $114,211.20.')"></ div>
-                    <div className="Graph2-bar" onClick="alert('Employed: 11,310. Mean salary: $110,304.80.')"></ div>
-                    <div className="Graph2-bar" onClick="alert('Employed: 10,820. Mean salary: $108,630.01.')"></ div>
+                      {
+                        this.state.data.map(el => (el.occupational_title === this.state.occupation_select_2 & el.year > 2010 ? 
+                        <div className="Graph2-bar" style={{ width: Number(el.mean_wage)/this.state.highest_salary * 70 + '%' }}></ div>  : null
+                        ))
+                      }
                 </div>
-                <div className="GraphTicks">
+                {/* </div> */}
+                {/* <div className="GraphTicks">
                         <div className="Tick"><span>30,000</span></div>
                         <div className="Tick"><span>20,000</span></div>
                         <div className="Tick"><span>10,000</span></div>
@@ -135,7 +116,7 @@ class App extends Component {
                         <div className="Tick"><span>10,000</span></div>
                         <div className="Tick"><span>20,000</span></div>
                         <div className="Tick"><span>30,000</span></div>
-                </div>
+                </div> */}
             </div>
         </div>    
     </div>
