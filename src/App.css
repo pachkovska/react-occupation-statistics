@@ -8,7 +8,7 @@ body {
   margin: 30px;
   font-family: 'Montserrat', sans-serif;
   color: var(--font-color);
-  background-color: #e3e7ea;
+  /* background-color: #e3e7ea; */
 }
 
 h1 {
@@ -78,9 +78,13 @@ label {
 .Graph1 > div {
   background-color: var(--barGraph1-color);
   box-sizing: border-box;
-  height: 30px;
+  height: 40px;
   margin-bottom: 5px;
   font-size: 10px;
+  text-align: center;
+  padding: 5px;
+  border: 1px solid rgba(10, 10, 10, 0.15);
+  box-shadow: rgba(0, 0, 0) 1px 2px 3px;
 }
 
 .Years {
@@ -92,27 +96,33 @@ label {
 }
 
 .Years > div {
-  height: 30px;
+  height: 40px;
   margin-bottom: 5px;
 }
 
 .Graph2 > div {
   background-color: var(--barGraph2-color);
   box-sizing: border-box;
-  height: 30px;
+  height: 40px;
   margin-bottom: 5px;
   font-size: 10px;
+  text-align: center;
+  padding: 5px;
+  border: 1px solid rgba(10, 10, 10, 0.15);
+  box-shadow: rgba(0, 0, 0) 1px 2px 3px;
 }
 
 .ChartAreaContainer-leftLabel {
   grid-column: 1;
   margin-bottom: 5px;
+  font-weight: bold;
 }
 
 .ChartAreaContainer-rightLabel {
   grid-column: 3;
   justify-self: end;
   margin-bottom: 5px;
+  font-weight: bold;
 }
 
 .Graph1-bar:hover, .Graph2-bar:hover {
