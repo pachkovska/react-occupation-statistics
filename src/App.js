@@ -85,7 +85,6 @@ state = {
                 </div>
                 <div className="ChartAreaContainer-rightLabel">           {this.state.occupation_select_2}
                 </div>
-                {/* <div className="ChartArea-bars"> */}
                 <div className="Graph1">
                     {
                       this.state.data.map((el) => (el.occupational_title === this.state.occupation_select_1 & el.year > 2010 ? 
@@ -107,16 +106,6 @@ state = {
                         ))
                       }
                 </div>
-                {/* </div> */}
-                {/* <div className="GraphTicks">
-                        <div className="Tick"><span>30,000</span></div>
-                        <div className="Tick"><span>20,000</span></div>
-                        <div className="Tick"><span>10,000</span></div>
-                        <div className="Tick"><span>0</span></div>
-                        <div className="Tick"><span>10,000</span></div>
-                        <div className="Tick"><span>20,000</span></div>
-                        <div className="Tick"><span>30,000</span></div>
-                </div> */}
             </div>
         </div>    
     </div>
