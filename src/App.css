@@ -15,15 +15,6 @@ h1 {
   text-align: center;
 }
 
-/* .Container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-items: space-around;
-  margin-top: 30px;
-  /* height: 100vh; */
-/* } */ 
-
 .Container {
   display: grid;
   grid-template-columns: 300px 1fr;
@@ -57,18 +48,6 @@ label {
 
 .ChartAreaContainer {
   grid-column: 2;
-  /* display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  border-bottom: 1px solid lightgray;
-  border-left: 1px solid lightgray;
-  border-right: 1px solid lightgray;
-  padding-bottom: 10px;
-  /* width: 700px; */
-  /* justify-content: center;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);  */
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   grid-template-rows: 20px 1fr;
@@ -76,64 +55,7 @@ label {
   grid-gap: 5px;
 }
 
-
-
-/*
-.GraphTicks {
-  bottom: -100px;
-}
-
-.Tick {
-  height: 10px;
-  position: absolute;
-  bottom: -10px;
-  font-size: 10px;
-  border-left: lightgray 1px solid;
-}
-
-.Tick:nth-child(1)  {
-  left: 0px;
-}
-
-.Tick:nth-child(2)  {
-  left: 115px;
-}
-
-.Tick:nth-child(3)  {
-  left: 230px;
-}
-
-.Tick:nth-child(4)  {
-  left: 347px;
-}
-
-.Tick:nth-child(5)  {
-  left: 465px;
-}
-
-.Tick:nth-child(6)  {
-  left: 580px;
-}
-
-.Tick:nth-child(7)  {
-  left: 700px;
-}
-
-.Tick > span {
-  position:relative;
-  bottom: -10px;
-  left: -7px;
-} */
-
-/* .Graph1, .Graph2, .barLabels {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: repeat(10, 1fr);
-  row-gap: 10px;
-} */
-
  .Graph1 {
-  /* align-items: end; */
   grid-column: 1;
   grid-row: 2;
   display: flex;
@@ -235,15 +157,6 @@ label {
     display: block;
     text-align: center;
   }
-
-  /* .Container {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-items: space-around;
-    /* margin-top: 30px; */
-    /* height: 100vh; */
-  /* } */
 
   .Card--style {
     width: 80vw;
