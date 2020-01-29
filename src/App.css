@@ -1,5 +1,5 @@
 :root {
-  --barGraph1-color: #6c7b95;
+  --barGraph1-color: #aab6ca;
   --barGraph2-color: #c7f0db;
   --font-color: #47515b;
 }
@@ -80,6 +80,7 @@ label {
   box-sizing: border-box;
   height: 30px;
   margin-bottom: 5px;
+  font-size: 10px;
 }
 
 .Years {
@@ -100,6 +101,7 @@ label {
   box-sizing: border-box;
   height: 30px;
   margin-bottom: 5px;
+  font-size: 10px;
 }
 
 .ChartAreaContainer-leftLabel {
