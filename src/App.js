@@ -19,7 +19,7 @@ state = {
     .then(response => response.json())
     .then(data => {
         this.setState({
-          data : data.filter(el => el.year > 2010), //filter out noisy occupations 
+          data : data.filter(el => el.year > 2010), //filter out noisy results 
         });
     });
   }
