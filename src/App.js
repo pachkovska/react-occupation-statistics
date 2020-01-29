@@ -19,17 +19,19 @@ state = {
     .then(response => response.json())
     .then(data => {
         this.setState({
-          data : data,
+          data : data.filter(el => el.year > 2010), //filter out noisy occupations 
         });
     });
   }
 
   onOptionChange = (ev) => {
     let {name, value} = ev.target;
+    let select_highest_salary = Math.max(...this.state.data.filter(el => el.occupational_title === value).map(wage => Number(wage.mean_wage)).filter(value => !Number.isNaN(value)));
+    let select_highest_employed = Math.max(...this.state.data.filter(el => el.occupational_title === value).map(el => Number(el.number_of_employed)).filter(value => !Number.isNaN(value)));
     this.setState({
       [name]: value,
-      highest_salary: Math.max(...this.state.data.filter(el => el.occupational_title === value).map(wage => Number(wage.mean_wage)).filter(value => !Number.isNaN(value))),
-      highest_employed: Math.max(...this.state.data.filter(el => el.occupational_title === value).map(el => Number(el.number_of_employed)).filter(value => !Number.isNaN(value))),
+      highest_salary: Math.max(this.state.highest_salary, select_highest_salary),
+      highest_employed: Math.max(this.state.highest_employed, select_highest_employed),
     });
   }
 
@@ -38,7 +40,7 @@ state = {
     .then(response => response.json())
     .then(data => {
         this.setState({
-          data : data,
+          data : data.filter(el => el.year > 2010), //filter out noisy occupations 
         });
     });
     this.setState({
@@ -67,14 +69,14 @@ state = {
                 <label>Choose occupations to compare:</label>
                 <select name="occupation_select_1" id="first-select" onChange={this.onOptionChange}>
                     {
-                      this.state.data.filter(el => el.occupational_title.length < 30).map(title => (
+                      this.state.data.filter(el => el.occupational_title.length < 20).map(title => (
                       <option value={title.occupational_title}>{title.occupational_title}</ option> 
                         ))
                     }
                 </select>
                 <select name="occupation_select_2" id="second-select" onChange={this.onOptionChange}>
                     {
-                      this.state.data.filter(el => el.occupational_title.length < 30).map(title => (
+                      this.state.data.filter(el => el.occupational_title.length < 20).map(title => (
                       <option value={title.occupational_title}>{title.occupational_title}</ option>
                         ))
                     }
@@ -87,21 +89,21 @@ state = {
                 </div>
                 <div className="Graph1">
                     {
-                      this.state.data.map((el) => (el.occupational_title === this.state.occupation_select_1 & el.year > 2010 ? 
+                      this.state.data.map((el) => (el.occupational_title === this.state.occupation_select_1 && el.year > 2010 ? 
                       <div className="Graph1-bar"  style={{ width: Number(el.mean_wage)/this.state.highest_salary * 70 + '%' }}></div> : null
                       ))
                     }
                 </div> 
                 <div className="Years">
                   {
-                    this.state.data.filter(el => el.occupational_title === this.state.occupation_select_1 & el.year > 2010).map(el => (el.occupational_title === this.state.occupation_select_1 & el.year > 2010 ?
+                    this.state.data.filter(el => el.occupational_title === this.state.occupation_select_1 && el.year > 2010).map(el => (el.occupational_title === this.state.occupation_select_1 && el.year > 2010 ?
                     <div>{el.year}</div> : null
                     ))
                   }
                 </div>
                 <div className="Graph2">
                       {
-                        this.state.data.map(el => (el.occupational_title === this.state.occupation_select_2 & el.year > 2010 ? 
+                        this.state.data.map(el => (el.occupational_title === this.state.occupation_select_2 && el.year > 2010 ? 
                         <div className="Graph2-bar" style={{ width: Number(el.mean_wage)/this.state.highest_salary * 70 + '%' }}></ div>  : null
                         ))
                       }
