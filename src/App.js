@@ -35,8 +35,9 @@ state = {
     });
   }
 
-  onAreaChange = () => {
-    fetch(`https://data.edd.ca.gov/resource/pwxn-y2g5.json?wage_type=Annual wage or salary&area_name=${this.state.area_selection}&$limit=10000`)
+  onAreaChange = (ev) => {
+    let new_area = ev.target.value;
+    fetch(`https://data.edd.ca.gov/resource/pwxn-y2g5.json?wage_type=Annual wage or salary&area_name=${new_area}&$limit=10000`)
     .then(response => response.json())
     .then(data => {
         this.setState({
@@ -44,6 +45,7 @@ state = {
         });
     });
     this.setState({
+      area_selection: new_area,
       occupation_select_1: this.occupation_select_1,
       occupation_select_2: this.occupation_select_2,
     })
