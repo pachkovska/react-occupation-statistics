@@ -10,7 +10,7 @@ state = {
       occupation_select_1 : "",
       occupation_select_2 : "",
       highest_salary: 150000,
-      highest_employed : 10,
+      highest_employed : 1000,
     }
 
 
@@ -19,19 +19,23 @@ state = {
     .then(response => response.json())
     .then(data => {
         this.setState({
-          data : data.filter(el => el.year > 2010), //filter out noisy results 
+          data : data.filter(el => el.year > 2010).filter(el => el.occupational_title.length < 20), //filter out noisy results 
         });
     });
   }
 
   onOptionChange = (ev) => {
     let {name, value} = ev.target;
-    let select_highest_salary = Math.max(...this.state.data.filter(el => el.occupational_title === value).map(wage => Number(wage.mean_wage)).filter(value => !Number.isNaN(value)));
-    let select_highest_employed = Math.max(...this.state.data.filter(el => el.occupational_title === value).map(el => Number(el.number_of_employed)).filter(value => !Number.isNaN(value)));
     this.setState({
       [name]: value,
-      highest_salary: Math.max(this.state.highest_salary, select_highest_salary),
-      highest_employed: Math.max(this.state.highest_employed, select_highest_employed),
+    }, this.updateHighest);
+  }
+
+  updateHighest = () => {
+    let getHighest_1 = Math.max(...this.state.data.filter(el => el.occupational_title === this.state.occupation_select_1).map(el => Number(el.number_of_employed)).filter(el => !Number.isNaN(el)));
+    let getHighest_2 = Math.max(...this.state.data.filter(el => el.occupational_title === this.state.occupation_select_2).map(el => Number(el.number_of_employed)).filter(el => !Number.isNaN(el)));
+    this.setState({
+      highest_employed: Math.max(getHighest_1, getHighest_2),
     });
   }
 
@@ -41,14 +45,11 @@ state = {
     .then(response => response.json())
     .then(data => {
         this.setState({
-          data : data.filter(el => el.year > 2010), //filter out noisy occupations 
+          data : data.filter(el => el.year > 2010).filter(el => el.occupational_title.length < 20),
+          area_selection: new_area,
+          highest_employed: Math.max(...data.filter(el => el.occupational_title === this.state.occupation_select_2 || el.occupational_title === this.state.occupation_select_2).map(el => Number(el.number_of_employed)).filter(el => !Number.isNaN(el))),
         });
     });
-    this.setState({
-      area_selection: new_area,
-      occupation_select_1: this.occupation_select_1,
-      occupation_select_2: this.occupation_select_2,
-    })
   }
 
   render() {
@@ -71,14 +72,14 @@ state = {
                 <label>Choose occupations to compare:</label>
                 <select name="occupation_select_1" id="first-select" onChange={this.onOptionChange}>
                     {
-                      this.state.data.filter(el => el.occupational_title.length < 20).map(title => (
+                      this.state.data.map(title => (
                       <option value={title.occupational_title}>{title.occupational_title}</ option> 
                         ))
                     }
                 </select>
                 <select name="occupation_select_2" id="second-select" onChange={this.onOptionChange}>
                     {
-                      this.state.data.filter(el => el.occupational_title.length < 20).map(title => (
+                      this.state.data.map(title => (
                       <option value={title.occupational_title}>{title.occupational_title}</ option>
                         ))
                     }
@@ -87,12 +88,12 @@ state = {
             <div className="ChartAreaContainer Card--style">
                 <div className="ChartAreaContainer-leftLabel">{this.state.occupation_select_1}
                 </div>
-                <div className="ChartAreaContainer-rightLabel">           {this.state.occupation_select_2}
+                <div className="ChartAreaContainer-rightLabel">{this.state.occupation_select_2}
                 </div>
                 <div className="Graph1">
                     {
                       this.state.data.map((el) => (el.occupational_title === this.state.occupation_select_1 && el.year > 2010 ? 
-  <div className="Graph1-bar"  style={{ width: Number(el.number_of_employed)/this.state.highest_employed * 70 + '%' }}>Employed: {el.number_of_employed}</div> : null
+  <div className="Graph1-bar"  style={{ width: Number(el.number_of_employed)/this.state.highest_employed * 100 + '%' }}>Employed: {el.number_of_employed}</div> : null
                       ))
                     }
                 </div> 
@@ -106,7 +107,7 @@ state = {
                 <div className="Graph2">
                       {
                         this.state.data.map(el => (el.occupational_title === this.state.occupation_select_2 && el.year > 2010 ? 
-                        <div className="Graph2-bar" style={{ width: Number(el.number_of_employed)/this.state.highest_employed * 70 + '%' }}>Employed: {el.number_of_employed}</ div>  : null
+                        <div className="Graph2-bar" style={{ width: Number(el.number_of_employed)/this.state.highest_employed * 100 + '%' }}>Employed: {el.number_of_employed}</ div>  : null
                         ))
                       }
                 </div>
