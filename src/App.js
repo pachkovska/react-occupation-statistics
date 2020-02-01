@@ -85,6 +85,7 @@ state = {
                 </select>
             </div>
             <div className="ChartAreaContainer Card--style">
+                <div className="ChartAreaContainer-dimention">Number of employed</div>
                 <div className="ChartAreaContainer-leftLabel">{this.state.occupation_select_1}
                 </div>
                 <div className="ChartAreaContainer-rightLabel">{this.state.occupation_select_2}
@@ -92,7 +93,7 @@ state = {
                 <div className="Graph1">
                     {
                       this.state.data.map((el) => (el.occupational_title === this.state.occupation_select_1 && el.year > 2010 ? 
-  <div className="Graph1-bar"  style={{ width: Number(el.number_of_employed)/this.state.highest_employed * 100 + '%' }}>Employed: {el.number_of_employed}</div> : null
+  <div className="Graph1-bar"  style={{ width: Number(el.number_of_employed)/this.state.highest_employed * 100 + '%' }}>{el.number_of_employed}</div> : null
                       ))
                     }
                 </div> 
@@ -106,7 +107,7 @@ state = {
                 <div className="Graph2">
                       {
                         this.state.data.map(el => (el.occupational_title === this.state.occupation_select_2 && el.year > 2010 ? 
-                        <div className="Graph2-bar" style={{ width: Number(el.number_of_employed)/this.state.highest_employed * 100 + '%' }}>Employed: {el.number_of_employed}</ div>  : null
+                        <div className="Graph2-bar" style={{ width: Number(el.number_of_employed)/this.state.highest_employed * 100 + '%' }}>{el.number_of_employed}</ div>  : null
                         ))
                       }
                 </div>
