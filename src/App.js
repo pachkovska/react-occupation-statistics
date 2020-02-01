@@ -47,8 +47,7 @@ state = {
         this.setState({
           data : data.filter(el => el.year > 2010).filter(el => el.occupational_title.length < 20),
           area_selection: new_area,
-          highest_employed: Math.max(...data.filter(el => el.occupational_title === this.state.occupation_select_2 || el.occupational_title === this.state.occupation_select_2).map(el => Number(el.number_of_employed)).filter(el => !Number.isNaN(el))),
-        });
+        }, this.updateHighest);
     });
   }
 
